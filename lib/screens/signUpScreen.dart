@@ -42,10 +42,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     // buat navigasi ke SignInScreen
     Navigator.pushReplacementNamed(context, '/signin');
 
-    // print('*** Sign up berhasil!');
-    // print('Nama: $name');
-    // print('Nama Pengguna: $username');
-    // print('Kata Sandi: $password');
+    print('*** Sign up berhasil!');
+    print('Nama: $name');
+    print('Nama Pengguna: $username');
+    print('Kata Sandi: $password');
   }
 
   // TODO: 2. Membuat fungsi dispose

@@ -61,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage: AssetImage('assets/placeholder_image.png'),
+                            backgroundImage: AssetImage('images/placeholder_image.png'),
                           ),
                         ),
                         if(isSignedIn)
@@ -75,7 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
-                //   TODO 3 : Buat bagian ProfileInfor yang berisi info profile
+                //   TODO 3 : Buat bagian ProfileInfo yang berisi info profile
                 SizedBox(height: 20),
                 Divider(color: Colors.deepPurple[100]),
                 SizedBox(height: 4),

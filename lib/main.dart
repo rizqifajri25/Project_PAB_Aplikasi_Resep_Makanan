@@ -39,12 +39,17 @@ class MyApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        initialRoute: '/',
-        routes: {
-          '/homescreen': (context) => const MainScreen(),
-          '/signin': (context) => const SignInScreen(),
-          '/signup': (context) => const SignUpScreen(),
-        }
+        // initialRoute: '/',
+        // routes: {
+        //   '/homescreen': (context) => const MainScreen(),
+        //   '/signin': (context) => const SignInScreen(),
+        //   '/signup': (context) => const SignUpScreen(),
+        // }
+      home : const MainScreen(),
+      routes: {
+          '/signin' : (context) => const SignInScreen(),
+          '/signup' : (context) => const SignUpScreen(),
+      },
     );
   }
 }
@@ -63,8 +68,8 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     SearchScreen(),
     FavoriteScreen(),
-    SignUpScreen(),
-    SignInScreen(),
+    // SignUpScreen(),
+    // SignInScreen(),
     ProfileScreen(),
   ];
 
