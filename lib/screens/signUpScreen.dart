@@ -72,98 +72,171 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO: 2. Pasang AppBar
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-      ),
-      // TODO: 3. Pasang body
-      body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              decoration: const BoxDecoration(
+                color: Color(0xFF2F3E6B),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Cook.In',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'SIGN UP',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Form(
                 child: Column(
-                  // TODO: 4. Atur mainAxisAlignment dan crossAxisAlignment
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // TODO: 5. Pasang TextFormField Nama Lengkap
+                    // Nama Lengkap
                     TextFormField(
                       controller: _nameController,
-                      decoration: const InputDecoration(
-                        labelText: "Nama",
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: "Nama Lengkap Pengguna",
+                        filled: true,
+                        fillColor: const Color(0xFFEAF0FF),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    // TODO: 6. Pasang TextFormField Nama Pengguna
+
+                    const SizedBox(height: 20),
+
+                    // Username
                     TextFormField(
                       controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: "Nama Pengguna",
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: "Nama Pengguna",
+                        filled: true,
+                        fillColor: const Color(0xFFEAF0FF),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
-                    // TODO: 7. Pasang TextFormField Kata Sandi
-                    const SizedBox(
-                      height: 20,
-                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Password
                     TextFormField(
                       controller: _passwordController,
-                      decoration: InputDecoration(
-                          labelText: "Kata Sandi",
-                          errorText: _errorText.isNotEmpty ? _errorText : null,
-                          border: const OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                            icon: Icon(_obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                          )),
                       obscureText: _obscurePassword,
+                      decoration: InputDecoration(
+                        hintText: "Kata Sandi",
+                        filled: true,
+                        fillColor: const Color(0xFFEAF0FF),
+                        errorText:
+                        _errorText.isNotEmpty ? _errorText : null,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    // TODO: 8. Pasang ElevatedButton Sign Up
-                    const SizedBox(
-                      height: 20,
+
+                    const SizedBox(height: 30),
+
+                    // Button Sign Up
+                    SizedBox(
+                      width: double.infinity,
+                      height: 45,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: _signUp,
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(color: Colors.white,fontSize: 16),
+                        ),
+                      ),
                     ),
-                    ElevatedButton(onPressed: _signUp, child: const Text("Sign Up")),
-                    // TODO: 9. Pasang TextButton Sign In
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // TextButton(
-                    //     onPressed: () {},
-                    //     child: Text('Sudah punya akun? Masuk di sini.')
-                    // ),
+
+                    const SizedBox(height: 20),
+
                     RichText(
-                        text: TextSpan(
-                            text: 'Sudah punya akun? ',
+                      text: TextSpan(
+                        text: 'Sudah punya akun? ',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Masuk di sini',
                             style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.deepPurple,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
                             ),
-                            children: [
-                              TextSpan(
-                                text: 'Masuk di sini.',
-                                style: const TextStyle(
-                                  color: Colors.blue,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 16,
-                                ),
-                                recognizer: TapGestureRecognizer()..onTap = () {},
-                              ),
-                            ]))
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pop(context);
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-          )),
+          ],
+        ),
+      ),
     );
   }
 }

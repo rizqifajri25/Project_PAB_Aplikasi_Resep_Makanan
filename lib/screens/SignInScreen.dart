@@ -83,96 +83,142 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO: 2. Pasang AppBar
-      appBar: AppBar(
-        title: const Text('Sign In'),
-      ),
-      // TODO: 3. Pasang body
-      body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(vertical: 40),
+              decoration: const BoxDecoration(
+                color: Color(0xFF2F3E6B),
+              ),
+              child: Column(
+                children: const [
+                  Text(
+                    'Cook.In',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'SIGN IN',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      letterSpacing: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 40),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Form(
                 child: Column(
-                  // TODO: 4. Atur mainAxisAlignment dan crossAxisAlignment
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // TODO: 5. Pasang TextFormField Nama Pengguna
+                    // Username
                     TextFormField(
                       controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: "Nama Pengguna",
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        hintText: "Nama Pengguna",
+                        filled: true,
+                        fillColor: const Color(0xFFEAF0FF),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
-                    // TODO: 6. Pasang TextFormField Kata Sandi
-                    const SizedBox(
-                      height: 20,
-                    ),
+
+                    const SizedBox(height: 20),
+
                     TextFormField(
                       controller: _passwordController,
-                      decoration: InputDecoration(
-                          labelText: "Kata Sandi",
-                          errorText: _errorText.isNotEmpty ? _errorText : null,
-                          border: const OutlineInputBorder(),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
-                            },
-                            icon: Icon(_obscurePassword
-                                ? Icons.visibility_off
-                                : Icons.visibility),
-                          )),
                       obscureText: _obscurePassword,
+                      decoration: InputDecoration(
+                        hintText: "Kata Sandi",
+                        filled: true,
+                        fillColor: const Color(0xFFEAF0FF),
+                        errorText:
+                        _errorText.isNotEmpty ? _errorText : null,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    // TODO: 7. Pasang ElevatedButton Sign In
-                    const SizedBox(
-                      height: 20,
+
+                    const SizedBox(height: 30),
+
+                    SizedBox(
+                      width: double.infinity,
+                      height: 45,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: _signIn,
+                        child: const Text(
+                          "Sign In",
+                          style: TextStyle(color:Colors.white,fontSize: 16),
+                        ),
+                      ),
                     ),
-                    ElevatedButton(
-                        onPressed: () {
-                          _signIn();
-                        },
-                        child: const Text("Sign In")),
-                    // TODO: 8. Pasang TextButton Sign Up
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // TextButton(
-                    //     onPressed: () {
-                    //       Navigator.pushNamed(context, '/signup');
-                    //     },
-                    //     child: Text('Belum punya akun? Daftar di sini.')
-                    // ),
+                    // up
+                    const SizedBox(height: 20),
+
                     RichText(
-                        text: TextSpan(
-                            text: 'Belum punya akun? ',
+                      text: TextSpan(
+                        text: 'Belum Punya Akun? ',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: 'Daftar Di Sini',
                             style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.deepPurple,
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
                             ),
-                            children: [
-                              TextSpan(
-                                text: 'Daftar di sini.',
-                                style: const TextStyle(
-                                  color: Colors.blue,
-                                  decoration: TextDecoration.underline,
-                                  fontSize: 16,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.pushNamed(context, '/signup');
-                                  },
-                              ),
-                            ]))
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushNamed(context, '/signup');
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
-          )),
+          ],
+        ),
+      ),
     );
   }
+
 }
