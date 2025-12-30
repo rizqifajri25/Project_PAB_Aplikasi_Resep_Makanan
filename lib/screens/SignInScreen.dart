@@ -186,7 +186,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                       ),
                     ),
-                    //
+                    // up
                     const SizedBox(height: 20),
 
                     RichText(
