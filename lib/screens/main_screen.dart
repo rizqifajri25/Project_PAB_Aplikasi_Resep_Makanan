@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'favorite_screen.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
 import 'search_screen.dart';
+import '../theme/theme_provider.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -13,7 +15,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  // TODO: 1. Deklarasikan variabel
   int _currentIndex = 0;
 
   final List<Widget> _children = [
@@ -25,12 +26,24 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
     return Scaffold(
-      // TODO: 2. Buat properti body berupa widget yang ditampilkan
+      appBar: AppBar(title: const Text('Wisata Candi'),
+        actions: [
+          Switch(
+            value: themeProvider.isDarkMode,
+            onChanged: themeProvider.toggleTheme,
+          ),
+        ],
+      ),
+
+      // ❌ TIDAK DIUBAH
       body: _children[_currentIndex],
-      // TODO: 3. Buat properti bottomNavigationBar dengan nilai Theme
+
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
+          // ❌ warna hardcode tetap, tapi aman
           canvasColor: Colors.blue.shade900,
         ),
         child: BottomNavigationBar(
@@ -64,7 +77,6 @@ class _MainScreenState extends State<MainScreen> {
           type: BottomNavigationBarType.fixed,
         ),
       ),
-
     );
   }
 }

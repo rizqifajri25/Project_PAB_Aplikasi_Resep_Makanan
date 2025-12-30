@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:wisata_candi/screens/home_screen.dart';
 import 'package:wisata_candi/screens/main_screen.dart';
-import 'package:wisata_candi/screens/search_screen.dart';
 import 'package:wisata_candi/screens/signInscreen.dart';
 import 'package:wisata_candi/screens/signUpscreen.dart';
 
+import 'theme/app_theme.dart';
+import 'theme/theme_provider.dart';
+
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,31 +23,32 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Wisata Candi',
-      theme: ThemeData(
-        appBarTheme: const AppBarTheme(
-          iconTheme: IconThemeData(color: Colors.deepPurple),
-          titleTextStyle: TextStyle(
-            color: Colors.deepPurple,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple).copyWith(
-          primary: Colors.deepPurple,
-          surface: Colors.deepPurple[50],
-        ),
-        useMaterial3: true,
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    return AnimatedTheme(
+      data: themeProvider.isDarkMode
+          ? AppTheme.darkTheme
+          : AppTheme.lightTheme,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Wisata Candi',
+
+        // 🔥 Theme global
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeProvider.themeMode,
+
+        home: const MainScreen(),
+
+        initialRoute: '/',
+        routes: {
+          '/homescreen': (context) => const HomeScreen(),
+          '/signin': (context) => const SignInScreen(),
+          '/signup': (context) => const SignUpScreen(),
+        },
       ),
-      home: MainScreen(),
-      initialRoute: '/',
-      routes: {
-        '/homescreen': (context) => const HomeScreen(),
-        '/signin': (context) => const SignInScreen(),
-        '/signup': (context) => const SignUpScreen(),
-      },
     );
   }
 }

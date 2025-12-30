@@ -14,13 +14,54 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  bool isFavorite = false;
+  bool isSignedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkSignInStatus();
+    _loadFavoriteStatus();
+  }
+
+  void _checkSignInStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isSignedIn = prefs.getBool('isSignedIn') ?? false;
+    });
+  }
+
+  void _loadFavoriteStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isFavorite = prefs.getBool('favorite_${widget.candi.name}') ?? false;
+    });
+  }
+
+  Future<void> _toggleFavorite() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (!isSignedIn) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/signin');
+      });
+      return;
+    }
+
+    setState(() {
+      isFavorite = !isFavorite;
+      prefs.setBool('favorite_${widget.candi.name}', isFavorite);
+    });
+  }
+
+  // ================= UI HELPERS =================
+
   Widget _sectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 16,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -29,11 +70,20 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget _bulletText(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
+      padding: const EdgeInsets.only(bottom: 6),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('• '),
-          Expanded(child: Text(text)),
+          Text(
+            '• ',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          Expanded(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
         ],
       ),
     );
@@ -42,68 +92,26 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget _numberText(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
-      child: Text('• $text'),
+      child: Text(
+        '• $text',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
     );
   }
 
-
-  bool isFavorite = false;
-  bool isSignedIn = false; // Menyimpan status sign in
-
-  @override
-  void initState() {
-    super.initState();
-    _checkSignInStatus(); // Memeriksa status sign in saat layar dimuat
-    _loadFavoriteStatus(); // Memeriksa status favorit saat layar dimuat
-  }
-
-  // Memeriksa status sign in
-  void _checkSignInStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool signedIn = prefs.getBool('isSignedIn') ?? false;
-    setState(() {
-      isSignedIn = signedIn;
-    });
-  }
-
-  // Memeriksa status favorit
-  void _loadFavoriteStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool favorite = prefs.getBool('favorite_${widget.candi.name}') ?? false;
-    setState(() {
-      isFavorite = favorite;
-    });
-  }
-
-  Future<void> _toggleFavorite() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Memeriksa apakah pengguna sudah sign in
-    if (!isSignedIn) {
-      // Jika belum sign in, arahkan ke SignInScreen
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, '/signin');
-      });
-      return;
-    }
-
-    bool favoriteStatus = !isFavorite;
-    prefs.setBool('favorite_${widget.candi.name}', favoriteStatus);
-
-    setState(() {
-      isFavorite = favoriteStatus;
-    });
-  }
+  // ================= BUILD =================
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.background,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // IMAGE HEADER
+            // ================= IMAGE HEADER =================
             Stack(
               children: [
                 Hero(
@@ -119,17 +127,31 @@ class _DetailScreenState extends State<DetailScreen> {
                   top: 40,
                   left: 16,
                   child: CircleAvatar(
-                    backgroundColor: Colors.black.withOpacity(0.4),
+                    backgroundColor: Colors.black.withOpacity(0.5),
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
                 ),
+                Positioned(
+                  top: 40,
+                  right: 16,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.black.withOpacity(0.5),
+                    child: IconButton(
+                      icon: Icon(
+                        isFavorite ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.redAccent,
+                      ),
+                      onPressed: _toggleFavorite,
+                    ),
+                  ),
+                ),
               ],
             ),
 
-            // CONTENT
+            // ================= CONTENT =================
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -138,21 +160,25 @@ class _DetailScreenState extends State<DetailScreen> {
                   // TITLE
                   Text(
                     widget.candi.name,
-                    style: const TextStyle(
-                      fontSize: 22,
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 6),
+
+                  const SizedBox(height: 8),
 
                   // CATEGORY
                   Row(
-                    children: const [
-                      Icon(Icons.restaurant_menu, size: 16, color: Colors.blue),
-                      SizedBox(width: 6),
+                    children: [
+                      Icon(
+                        Icons.restaurant_menu,
+                        size: 16,
+                        color: colorScheme.primary,
+                      ),
+                      const SizedBox(width: 6),
                       Text(
                         'Kategori Makanan',
-                        style: TextStyle(color: Colors.black54),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
                   ),
@@ -163,7 +189,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   _sectionTitle('Deskripsi'),
                   Text(
                     widget.candi.description,
-                    style: const TextStyle(height: 1.5),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      height: 1.5,
+                    ),
                   ),
 
                   const SizedBox(height: 20),
@@ -189,6 +217,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   // REKOMENDASI
                   _sectionTitle('Rekomendasi Resep Lain'),
                   const SizedBox(height: 10),
+
                   SizedBox(
                     height: 160,
                     child: ListView.builder(
@@ -199,14 +228,14 @@ class _DetailScreenState extends State<DetailScreen> {
                           width: 140,
                           margin: const EdgeInsets.only(right: 12),
                           decoration: BoxDecoration(
+                            color: colorScheme.surface,
                             borderRadius: BorderRadius.circular(12),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: Theme.of(context).shadowColor,
                                 blurRadius: 6,
                               ),
                             ],
-                            color: Colors.white,
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -216,7 +245,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                   top: Radius.circular(12),
                                 ),
                                 child: CachedNetworkImage(
-                                  imageUrl: widget.candi.imageUrls[index],
+                                  imageUrl:
+                                  widget.candi.imageUrls[index],
                                   height: 100,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
@@ -226,7 +256,10 @@ class _DetailScreenState extends State<DetailScreen> {
                                 padding: const EdgeInsets.all(8),
                                 child: Text(
                                   'Resep ${index + 1}',
-                                  style: const TextStyle(
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
