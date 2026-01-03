@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wisata_candi/data/candi_data.dart';
-import 'package:wisata_candi/models/candi.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -10,88 +8,89 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  //TODO 1 Variabel
-  List<Candi> _filteredCandis = candiList;
-  String _searchQuery = "";
-  final TextEditingController _searchController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //TODO 2 APPBar
+      backgroundColor: Colors.white,
+
       appBar: AppBar(
-        title: Text('Pencarian Candi'),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'Cook.In',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-      //TODO 3 Body
+
+      // Body halaman
       body: Column(
         children: [
-          //TODO 4 Textfield Search
+          // Header
+          Container(
+            height: 55,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Color(0xFF2F4C7E),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+            ),
+            child: Row(
+              children: [
+                // kembali
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+
+                // tempat search
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      'SEARCH',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 48),
+              ],
+            ),
+          ),
+
+          // Search Field
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16.0),
             child: Container(
+              height: 45,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.deepPurple[50]),
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(25),
+              ),
               child: TextField(
-                autofocus: false,
-                decoration: InputDecoration(
-                    hintText: "Cari Candi....",
-                    prefixIcon: Icon(Icons.search),
-                    border: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.deepPurple)),
-                    contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 12)),
+                decoration: const InputDecoration(
+                  hintText: 'Cari Resep',
+                  prefixIcon: Icon(Icons.search),
+                  border: InputBorder.none,
+                ),
               ),
             ),
           ),
-          //TODO 5 Listview
-          Expanded(
-            child: ListView.builder(
-                itemCount: _filteredCandis.length,
-                itemBuilder: (content, index) {
-                  final candi = _filteredCandis[index];
-                  return Card(
-                    margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(8),
-                          width: 100,
-                          height: 100,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.asset(
-                              candi.imageAsset,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                candi.name,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              Text(candi.location)
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  );
-                }),
+
+          const Expanded(
+            child: SizedBox(),
           ),
-          const SizedBox(
-            height: 16,
-          )
         ],
       ),
     );
