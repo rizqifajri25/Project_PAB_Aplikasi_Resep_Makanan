@@ -1,13 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/candi.dart';
+import '../models/menu.dart';
 
 class DetailScreen extends StatefulWidget {
-  final Candi candi;
+  final Menu menu;
 
-  const DetailScreen({super.key, required this.candi});
+  const DetailScreen({super.key, required this.menu});
 
   @override
   State<DetailScreen> createState() => _DetailScreenState();
@@ -34,7 +33,7 @@ class _DetailScreenState extends State<DetailScreen> {
   void _loadFavoriteStatus() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      isFavorite = prefs.getBool('favorite_${widget.candi.name}') ?? false;
+      isFavorite = prefs.getBool('favorite_${widget.menu.nama}') ?? false;
     });
   }
 
@@ -50,11 +49,9 @@ class _DetailScreenState extends State<DetailScreen> {
 
     setState(() {
       isFavorite = !isFavorite;
-      prefs.setBool('favorite_${widget.candi.name}', isFavorite);
+      prefs.setBool('favorite_${widget.menu.nama}', isFavorite);
     });
   }
-
-  // ================= UI HELPERS =================
 
   Widget _sectionTitle(String title) {
     return Padding(
@@ -115,9 +112,9 @@ class _DetailScreenState extends State<DetailScreen> {
             Stack(
               children: [
                 Hero(
-                  tag: widget.candi.imageAsset,
+                  tag: widget.menu.imageAsset,
                   child: Image.asset(
-                    widget.candi.imageAsset,
+                    widget.menu.imageAsset,
                     width: double.infinity,
                     height: 300,
                     fit: BoxFit.cover,
@@ -159,7 +156,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 children: [
                   // TITLE
                   Text(
-                    widget.candi.name,
+                    widget.menu.nama,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -188,7 +185,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   // DESKRIPSI
                   _sectionTitle('Deskripsi'),
                   Text(
-                    widget.candi.description,
+                    widget.menu.deskripsi,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       height: 1.5,
                     ),
@@ -222,7 +219,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     height: 160,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.candi.imageUrls.length,
+                      itemCount: widget.menu.imageUrls.length,
                       itemBuilder: (context, index) {
                         return Container(
                           width: 140,
@@ -244,9 +241,8 @@ class _DetailScreenState extends State<DetailScreen> {
                                 borderRadius: const BorderRadius.vertical(
                                   top: Radius.circular(12),
                                 ),
-                                child: CachedNetworkImage(
-                                  imageUrl:
-                                  widget.candi.imageUrls[index],
+                                child: Image.asset(
+                                  widget.menu.imageUrls[index],
                                   height: 100,
                                   width: double.infinity,
                                   fit: BoxFit.cover,

@@ -10,53 +10,50 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.background,
 
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.background,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Cook.In',
-          style: TextStyle(
-            color: Colors.black,
+          style: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
 
-      // Body halaman
       body: Column(
         children: [
-          // Header
+          // HEADER
           Container(
             height: 55,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Color(0xFF2F4C7E),
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(12),
                 bottomRight: Radius.circular(12),
               ),
             ),
             child: Row(
               children: [
-                // kembali
                 IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
+                  onPressed: () => Navigator.pop(context),
                 ),
 
-                // tempat search
-                const Expanded(
+                Expanded(
                   child: Center(
                     child: Text(
                       'SEARCH',
-                      style: TextStyle(
-                        color: Colors.white,
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        color: colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
                       ),
@@ -69,28 +66,33 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
 
-          // Search Field
+          // SEARCH FIELD
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Container(
               height: 45,
               decoration: BoxDecoration(
-                color: Colors.grey.shade200,
+                color: colorScheme.surface,
                 borderRadius: BorderRadius.circular(25),
               ),
               child: TextField(
-                decoration: const InputDecoration(
+                style: theme.textTheme.bodyMedium,
+                decoration: InputDecoration(
                   hintText: 'Cari Resep',
-                  prefixIcon: Icon(Icons.search),
+                  hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurface.withOpacity(0.6),
+                  ),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: colorScheme.onSurface.withOpacity(0.7),
+                  ),
                   border: InputBorder.none,
                 ),
               ),
             ),
           ),
 
-          const Expanded(
-            child: SizedBox(),
-          ),
+          const Expanded(child: SizedBox()),
         ],
       ),
     );

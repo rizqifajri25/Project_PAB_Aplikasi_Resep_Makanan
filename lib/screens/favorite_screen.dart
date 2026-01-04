@@ -10,51 +10,53 @@ class FavoriteScreen extends StatefulWidget {
 class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.background,
 
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.background,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'Cook.In',
-          style: TextStyle(
-            color: Colors.black,
+          style: theme.textTheme.titleLarge?.copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
 
-      // Body halaman dan header
       body: Column(
         children: [
+          // HEADER
           Container(
             height: 55,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Color(0xFF2F4C7E),
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: colorScheme.primary,
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(12),
                 bottomRight: Radius.circular(12),
               ),
             ),
             child: Row(
               children: [
-                // back bbutton
                 IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: colorScheme.onPrimary,
+                  ),
+                  onPressed: () => Navigator.pop(context),
                 ),
 
-                const Expanded(
+                Expanded(
                   child: Center(
                     child: Text(
                       'FAVORITES',
-                      style: TextStyle(
-                        color: Colors.white,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
                       ),
@@ -67,38 +69,18 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ),
           ),
 
+          // CONTENT
           Expanded(
             child: Center(
               child: Text(
                 'Belum Ada Makanan Favorit',
-                style: TextStyle(
-                  color: Colors.grey,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.hintColor,
                 ),
               ),
             ),
           ),
         ],
-      ),
-
-      // navigasi
-      bottomNavigationBar: Container(
-        height: 65,
-        decoration: const BoxDecoration(
-          color: Color(0xFF2F4C7E),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-        ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Icon(Icons.home, color: Colors.white),
-            Icon(Icons.search, color: Colors.white),
-            Icon(Icons.favorite, color: Colors.white),
-            Icon(Icons.person, color: Colors.white),
-          ],
-        ),
       ),
     );
   }
