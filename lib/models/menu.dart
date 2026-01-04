@@ -5,6 +5,7 @@ class Menu {
   final String carabuat;
   final String imageAsset;
   final String tipe;
+  final List<String> imageUrls;
   bool isFavorite;
 
   Menu({
@@ -14,6 +15,7 @@ class Menu {
     required this.carabuat,
     required this.imageAsset,
     required this.tipe,
+    this.imageUrls = const [],
     this.isFavorite = false,
   });
 
