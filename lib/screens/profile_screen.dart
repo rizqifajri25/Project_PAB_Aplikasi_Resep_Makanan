@@ -107,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _changePhoto() async {
     if (!isSignedIn) return;
 
-    /// ===== WEB / DESKTOP =====
+    // ===== WEB / DESKTOP =====
     if (kIsWeb ||
         Platform.isWindows ||
         Platform.isLinux ||
@@ -121,18 +121,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (result == null || result.files.single.bytes == null) return;
 
       final base64Str = base64Encode(result.files.single.bytes!);
-
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("profilePhoto", base64Str);
 
       if (!mounted) return;
-      setState(() {
-        _profilePhotoBase64 = base64Str;
-      });
+      setState(() => _profilePhotoBase64 = base64Str);
       return;
     }
 
-    /// ===== ANDROID / IOS =====
+    // ===== ANDROID / IOS =====
     final source = await showModalBottomSheet<ImageSource>(
       context: context,
       builder: (ctx) => SafeArea(
@@ -171,9 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await prefs.setString("profilePhoto", base64Str);
 
     if (!mounted) return;
-    setState(() {
-      _profilePhotoBase64 = base64Str;
-    });
+    setState(() => _profilePhotoBase64 = base64Str);
   }
 
   ImageProvider _avatarProvider() {
@@ -195,13 +190,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _loadFavoriteCount();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadFavoriteCount();
-  }
-
-  // ================= UI =================
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -252,14 +240,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                /// ===== AVATAR =====
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: -55,
+                // ===== AVATAR =====
+                Padding(
+                  padding: const EdgeInsets.only(top: 130),
                   child: Center(
                     child: Stack(
-                      alignment: Alignment.bottomRight,
+                      clipBehavior: Clip.none,
                       children: [
                         CircleAvatar(
                           radius: 55,
@@ -271,22 +257,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
 
-                        /// ===== FIX ICON CAMERA =====
+                        /// ===== CAMERA BUTTON (FIXED & CLICKABLE) =====
                         if (isSignedIn)
-                          GestureDetector(
-                            onTap: _changePhoto,
-                            behavior: HitTestBehavior.opaque,
-                            child: Container(
-                              width: 42,
-                              height: 42,
-                              decoration: BoxDecoration(
-                                color: colorScheme.primary,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.camera_alt,
-                                color: colorScheme.onPrimary,
-                                size: 20,
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: _changePhoto,
+                                borderRadius: BorderRadius.circular(30),
+                                child: Container(
+                                  width: 42,
+                                  height: 42,
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.primary,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 6,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: colorScheme.onPrimary,
+                                    size: 20,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
