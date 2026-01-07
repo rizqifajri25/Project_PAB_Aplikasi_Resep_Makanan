@@ -185,7 +185,7 @@ class _DetailScreenState extends State<DetailScreen> {
                           size: 16, color: colorScheme.primary),
                       const SizedBox(width: 6),
                       Text(
-                        'Kategori Makanan',
+                        widget.menu.tipe,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],

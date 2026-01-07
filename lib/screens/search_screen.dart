@@ -42,10 +42,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             child: Row(
               children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
-                  onPressed: () => Navigator.pop(context),
-                ),
+                const SizedBox(width: 48),
                 Expanded(
                   child: Center(
                     child: Text(
