@@ -87,34 +87,43 @@ class _SignInScreenState extends State<SignInScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 40),
-              decoration: const BoxDecoration(
-                color: Color(0xFF2F3E6B),
-              ),
-              child: Column(
-                children: const [
-                  Text(
-                    'Cook.In',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'SIGN IN',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
-                ],
+          Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 40),
+          decoration: BoxDecoration(
+            color: const Color(0xFF2F3E6B),
+            image: DecorationImage(
+              image: AssetImage('images/background.jpeg'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Colors.black.withOpacity(0.35),
+                BlendMode.darken,
               ),
             ),
+          ),
+          child: Column(
+            children: const [
+              Text(
+                'Cook.In',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 5),
+              Text(
+                'SIGN IN',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                  letterSpacing: 1.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+
 
             const SizedBox(height: 40),
 
